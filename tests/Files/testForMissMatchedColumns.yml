@@ -1,0 +1,12 @@
+someTable:
+  - id: 2
+    name: "jon doe"
+    description: null
+    comment: "my \"test\""
+  - id: 4
+    name: "jane doe"
+    description: "test"
+    comment: "comment"
+  - id: 5
+    name: "jane dome"
+    comment: null

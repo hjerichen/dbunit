@@ -1,0 +1,93 @@
+name: Continuous Integration
+
+on:
+  - pull_request
+  - push
+
+jobs:
+
+  test:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        php:
+          - 7.4
+          - 8.0
+        dependencies:
+          - "--prefer-lowest"
+          - ""
+
+    name: PHP ${{ matrix.php }} Test ${{ matrix.dependencies }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@2.9.0
+        with:
+          php-version: ${{ matrix.php  }}
+          coverage: none
+
+      - name: Validate composer.json
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-
+        env:
+          DEPENDENCIES: ${{ matrix.dependencies}}
+
+      - name: Install Dependencies
+        run: composer update ${DEPENDENCIES}
+        env:
+          DEPENDENCIES: ${{ matrix.dependencies}}
+
+      - name: Run Tests
+        run: vendor/bin/phpunit
+
+  coverage:
+    runs-on: ubuntu-18.04
+    name: Code Coverage
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@2.9.0
+        with:
+          php-version: 7.4
+          coverage: pcov
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-coverage-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-coverage-composer-
+
+      - name: Install Dependencies
+        run: composer update
+
+      - name: Code coverage
+        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v

@@ -1,0 +1,12 @@
+someTable:
+  -
+    id: 2
+    name: "jon doe"
+    description: null
+    comment: "my \"test\""
+
+exampleTable:
+  -
+    id: 1
+    key: "key 1"
+    value: "value 1"

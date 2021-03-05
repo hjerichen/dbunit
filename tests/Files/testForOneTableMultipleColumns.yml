@@ -1,0 +1,6 @@
+someTable:
+  -
+    id: 2
+    name: "jon doe"
+    description: null
+    comment: "my \"test\""
