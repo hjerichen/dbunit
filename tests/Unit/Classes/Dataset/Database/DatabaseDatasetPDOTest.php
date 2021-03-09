@@ -2,6 +2,7 @@
 
 namespace HJerichen\DBUnit\Tests\Unit\Classes\Dataset\Database;
 
+use HJerichen\DBUnit\Dataset\Database\DatabaseDataset;
 use HJerichen\DBUnit\Dataset\Database\DatabaseDatasetPDO;
 use HJerichen\DBUnit\Dataset\Table;
 use PDO;
@@ -29,6 +30,11 @@ class DatabaseDatasetPDOTest extends TestCase
     }
 
     /* TESTS */
+
+    public function testClassImplementsCorrectInterface(): void
+    {
+        self::assertInstanceOf(DatabaseDataset::class, $this->databaseDataset);
+    }
 
     public function testWithoutSetMetaData(): void
     {
