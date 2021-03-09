@@ -19,4 +19,17 @@ class TableTest extends TestCase
         self::assertSame([], $table->getColumns());
         self::assertSame([], $table->getValueSets());
     }
+
+    public function testGetColumns(): void
+    {
+        $name = 'table';
+        $table = new Table($name, [
+            ['id' => 1, 'name' => 'name-1'],
+            ['id' => 2, 'text' => 'text-1'],
+        ]);
+
+        $expected = ['id', 'name', 'text'];
+        $actual = $table->getColumns();
+        self::assertEquals($expected, $actual);
+    }
 }

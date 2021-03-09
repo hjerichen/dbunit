@@ -23,10 +23,13 @@ class Table
 
     public function getColumns(): array
     {
-        if (count($this->valueSets) === 0) {
-            return [];
+        $valueSetColumns = [];
+        foreach ($this->valueSets as $valueSet) {
+            $valueSetColumns[] = array_keys($valueSet);
         }
-        return array_keys(reset($this->valueSets));
+        $columns = array_merge(...$valueSetColumns);
+        $columns = array_values(array_unique($columns));
+        return $columns;
     }
 
     public function getValueSets(): array
