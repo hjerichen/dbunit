@@ -21,6 +21,11 @@ class ImporterPDO implements Importer
         $this->database = $database;
     }
 
+    public function getDatabase(): PDO
+    {
+        return $this->database;
+    }
+
     public function import(Dataset $dataset): void
     {
         foreach ($dataset->getTables() as $table) {

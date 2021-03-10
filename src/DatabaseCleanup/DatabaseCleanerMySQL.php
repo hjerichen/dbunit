@@ -1,45 +1,25 @@
 <?php
 
-namespace HJerichen\DBUnit\Setup;
+namespace HJerichen\DBUnit\DatabaseCleanup;
 
-use HJerichen\DBUnit\Dataset\Dataset;
-use HJerichen\DBUnit\Importer\ImporterPDO;
 use PDO;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
  */
-class SetupOperationForMySQL
+class DatabaseCleanerMySQL implements DatabaseCleaner
 {
     private PDO $database;
-    private ImporterPDO $importer;
 
-    public function __construct(PDO $database, ImporterPDO $importer)
+    public function __construct(PDO $database)
     {
         $this->database = $database;
-        $this->importer = $importer;
     }
 
-    public function execute(Dataset $dataset): void
-    {
-        $this->cleanupDatabase();
-        $this->importDataset($dataset);
-    }
-
-    private function cleanupDatabase(): void
+    public function execute(): void
     {
         $tables = $this->getTablesContainingData();
         $this->truncateTables($tables);
-    }
-
-    private function importDataset(Dataset $dataset): void
-    {
-        try {
-            $this->disableForeignKeyChecks();
-            $this->importer->import($dataset);
-        } finally {
-            $this->enableForeignKeyChecks();
-        }
     }
 
     /** @return string[] */
@@ -59,16 +39,6 @@ class SetupOperationForMySQL
         foreach ($tables as $table) {
             $this->database->exec("truncate table {$table}");
         }
-    }
-
-    private function enableForeignKeyChecks(): void
-    {
-        $this->database->exec('SET foreign_key_checks=1');
-    }
-
-    private function disableForeignKeyChecks(): void
-    {
-        $this->database->exec('SET foreign_key_checks=0');
     }
 
     private function getDatabaseName(): string

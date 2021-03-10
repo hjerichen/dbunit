@@ -3,9 +3,10 @@
 namespace HJerichen\DBUnit\Tests\Unit\Classes\Setup;
 
 use Exception;
+use HJerichen\DBUnit\DatabaseCleanup\DatabaseCleanerMySQL;
 use HJerichen\DBUnit\Dataset\DatasetArray;
 use HJerichen\DBUnit\Importer\ImporterPDO;
-use HJerichen\DBUnit\Setup\SetupOperationForMySQL;
+use HJerichen\DBUnit\Setup\SetupOperationPDO;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
@@ -16,11 +17,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
  */
-class SetupOperationForMySQLTest extends TestCase
+class SetupOperationPDOTest extends TestCase
 {
     use ProphecyTrait;
 
-    private SetupOperationForMySQL $setupOperation;
+    private SetupOperationPDO $setupOperation;
     private ObjectProphecy $database;
     private ObjectProphecy $importer;
     private DatasetArray $dataset;
@@ -31,12 +32,13 @@ class SetupOperationForMySQLTest extends TestCase
         parent::setUp();
         $this->database = $this->prophesize(PDO::class);
         $this->importer = $this->prophesize(ImporterPDO::class);
+        $this->importer->getDatabase()->willReturn($this->database->reveal());
         $this->dataset = new DatasetArray([]);
 
         $this->setupDatabaseName();
 
-        $this->setupOperation = new SetupOperationForMySQL(
-            $this->database->reveal(),
+        $this->setupOperation = new SetupOperationPDO(
+            new DatabaseCleanerMySQL($this->database->reveal()),
             $this->importer->reveal(),
         );
     }
