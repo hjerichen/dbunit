@@ -16,6 +16,11 @@ class Table
         $this->valueSets = $valueSets;
     }
 
+    public function setValueSets(array $valueSets): void
+    {
+        $this->valueSets = $valueSets;
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -35,5 +40,19 @@ class Table
     public function getValueSets(): array
     {
         return $this->valueSets;
+    }
+
+    public function getNormalizedValueSets(): array
+    {
+        return array_map([$this, 'normalizeValueSet'], $this->valueSets);
+    }
+
+    private function normalizeValueSet(array $valueSet): array
+    {
+        $missingColumns = array_diff($this->getColumns(), array_keys($valueSet));
+        foreach ($missingColumns as $column) {
+            $valueSet[$column] = null;
+        }
+        return $valueSet;
     }
 }
