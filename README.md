@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/hjerichen/dbunit/badge.svg?branch=master)](https://coveralls.io/github/hjerichen/dbunit?branch=master)
 
 # DBUnit
-An alternative to dbunit.  
+An alternative to phpunit/dbunit.  
 Supports PDO Drivers but currently only tested with MySQL.
 
 ## Installation
