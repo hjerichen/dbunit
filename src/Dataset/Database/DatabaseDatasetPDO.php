@@ -1,11 +1,13 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace HJerichen\DBUnit\Dataset\Database;
 
 use HJerichen\DBUnit\Dataset\Table;
 use PDO;
 
+/**
+ * @author Heiko Jerichen <heiko@jerichen.de>
+ */
 class DatabaseDatasetPDO implements DatabaseDataset
 {
     private PDO $database;
