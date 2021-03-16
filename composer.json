@@ -1,6 +1,6 @@
 {
     "name": "hjerichen/dbunit",
-    "description": "Convert yaml to sql.",
+    "description": "An alternative to phpunit/dbunit.",
     "type": "library",
     "require": {
         "php": "^7.4 | ^8.0",
