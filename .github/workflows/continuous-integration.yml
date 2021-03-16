@@ -51,6 +51,11 @@ jobs:
         env:
           DEPENDENCIES: ${{ matrix.dependencies}}
 
+      - name: Setup MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
+
       - name: Run Tests
         run: vendor/bin/phpunit
 
@@ -81,6 +86,11 @@ jobs:
 
       - name: Install Dependencies
         run: composer update
+
+      - name: Setup MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
 
       - name: Code coverage
         run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
