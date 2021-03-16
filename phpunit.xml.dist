@@ -12,4 +12,9 @@
             <directory suffix=".php">./src</directory>
         </include>
     </coverage>
+    <php>
+        <const name="MYSQL_DSN" value="mysql:dbname=dbunit"/>
+        <const name="MYSQL_USER" value="root"/>
+        <const name="MYSQL_PASS" value="root"/>
+    </php>
 </phpunit>
