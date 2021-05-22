@@ -1,4 +1,6 @@
+DROP TABLE IF EXISTS `productExtension`;
 DROP TABLE IF EXISTS `product`;
+
 CREATE TABLE `product`
 (
     `id`    int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -7,7 +9,6 @@ CREATE TABLE `product`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-DROP TABLE IF EXISTS `productExtension`;
 CREATE TABLE `productExtension`
 (
     `id`        int(10) unsigned NOT NULL AUTO_INCREMENT,
