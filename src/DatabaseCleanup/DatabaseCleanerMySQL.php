@@ -44,7 +44,7 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
     private function truncateTables(array $tables): void
     {
         foreach ($tables as $table) {
-            $this->database->exec("truncate table {$table}");
+            $this->database->exec("truncate table `$table`");
         }
     }
 

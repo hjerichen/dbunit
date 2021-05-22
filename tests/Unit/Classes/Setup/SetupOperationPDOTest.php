@@ -118,7 +118,7 @@ class SetupOperationPDOTest extends TestCase
     private function expectTruncateTables(array $tables): void
     {
         foreach ($tables as $table) {
-            $this->database->exec("truncate table {$table}")->shouldBeCalledOnce();
+            $this->database->exec("truncate table `$table`")->shouldBeCalledOnce();
         }
     }
 
