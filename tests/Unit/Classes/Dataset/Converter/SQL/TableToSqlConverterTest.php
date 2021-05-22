@@ -34,7 +34,7 @@ class TableToSqlConverterTest extends TestCase
 
         $querySet = new SqlQuerySet;
         $querySet->parameters = [':id_0' => 1, ':title_0' => 'some title'];
-        $querySet->query = 'INSERT INTO someTable (`id`, `title`) VALUES (:id_0, :title_0);';
+        $querySet->query = 'INSERT INTO `someTable` (`id`, `title`) VALUES (:id_0, :title_0);';
 
         $expected = [$querySet];
         $actual = $this->converter->getQuerySetsForTable($table);
@@ -61,11 +61,11 @@ class TableToSqlConverterTest extends TestCase
 
         $querySet1 = new SqlQuerySet;
         $querySet1->parameters = [':id_0' => 1, ':title_0' => 'some title', ':id_1' => 2, ':title_1' => 'some title 2'];
-        $querySet1->query = 'INSERT INTO someTable (`id`, `title`) VALUES (:id_0, :title_0), (:id_1, :title_1);';
+        $querySet1->query = 'INSERT INTO `someTable` (`id`, `title`) VALUES (:id_0, :title_0), (:id_1, :title_1);';
 
         $querySet2 = new SqlQuerySet;
         $querySet2->parameters = [':id_0' => 3, ':text_0' => 'some text'];
-        $querySet2->query = 'INSERT INTO someTable (`id`, `text`) VALUES (:id_0, :text_0);';
+        $querySet2->query = 'INSERT INTO `someTable` (`id`, `text`) VALUES (:id_0, :text_0);';
 
         $expected = [$querySet1, $querySet2];
         $actual = $this->converter->getQuerySetsForTable($table);

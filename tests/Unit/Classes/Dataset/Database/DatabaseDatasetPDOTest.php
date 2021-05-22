@@ -47,7 +47,7 @@ class DatabaseDatasetPDOTest extends TestCase
     {
         $this->databaseDataset->setTableColumns('someTable', ['id', 'name']);
 
-        $sql = "SELECT `id`, `name` FROM someTable";
+        $sql = "SELECT `id`, `name` FROM `someTable`";
         $valueSets = [
             ['id' => 1, 'name' => 'name-1'],
             ['id' => 2, 'name' => 'name-2'],
@@ -64,14 +64,14 @@ class DatabaseDatasetPDOTest extends TestCase
         $this->databaseDataset->setTableColumns('someTable1', ['id', 'name']);
         $this->databaseDataset->setTableColumns('someTable2', ['id', 'text']);
 
-        $sql_1 = "SELECT `id`, `name` FROM someTable1";
+        $sql_1 = "SELECT `id`, `name` FROM `someTable1`";
         $valueSets_1 = [
             ['id' => 1, 'name' => 'name-1'],
             ['id' => 2, 'name' => 'name-2'],
         ];
         $this->setUpDatabase($sql_1, $valueSets_1);
 
-        $sql_2 = "SELECT `id`, `text` FROM someTable2";
+        $sql_2 = "SELECT `id`, `text` FROM `someTable2`";
         $valueSets_2 = [
             ['id' => 1, 'text' => 'text-1'],
             ['id' => 2, 'text' => 'text-2'],

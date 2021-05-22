@@ -1,1 +1,1 @@
-INSERT INTO someTable (`id`) VALUES (:id_0);
+INSERT INTO `someTable` (`id`) VALUES (:id_0);

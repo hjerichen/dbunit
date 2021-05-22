@@ -45,6 +45,6 @@ class DatabaseDatasetPDO implements DatabaseDataset
     {
         $columns = $this->tableColumns[$tableName];
         $columnsSQL = '`' . implode('`, `', $columns) . '`';
-        return "SELECT {$columnsSQL} FROM {$tableName}";
+        return "SELECT $columnsSQL FROM `$tableName`";
     }
 }
