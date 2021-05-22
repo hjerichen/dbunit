@@ -19,7 +19,14 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
     public function execute(): void
     {
         $tables = $this->getTablesContainingData();
-        $this->truncateTables($tables);
+        if (count($tables) === 0) return;
+
+        try {
+            $this->disableForeignKeyChecks();
+            $this->truncateTables($tables);
+        } finally {
+            $this->enableForeignKeyChecks();
+        }
     }
 
     /** @return string[] */
@@ -44,5 +51,15 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
     private function getDatabaseName(): string
     {
         return $this->database->query('select database()')->fetchColumn();
+    }
+
+    private function enableForeignKeyChecks(): void
+    {
+        $this->database->exec('SET foreign_key_checks=1');
+    }
+
+    private function disableForeignKeyChecks(): void
+    {
+        $this->database->exec('SET foreign_key_checks=0');
     }
 }

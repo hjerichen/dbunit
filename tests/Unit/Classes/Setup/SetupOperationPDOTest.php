@@ -61,9 +61,9 @@ class SetupOperationPDOTest extends TestCase
         $this->setupTablesWithData(['table-1', 'table-2']);
 
         $this->expectTruncateTables(['table-1', 'table-2']);
-        $this->expectDisableForeignKeyChecks();
+        $this->expectDisableForeignKeyChecks(2);
         $this->expectImportOfDataset();
-        $this->expectEnableForeignKeyChecks();
+        $this->expectEnableForeignKeyChecks(2);
 
         $this->setupOperation->execute($this->dataset);
     }
@@ -122,14 +122,14 @@ class SetupOperationPDOTest extends TestCase
         }
     }
 
-    private function expectEnableForeignKeyChecks(): void
+    private function expectEnableForeignKeyChecks(int $count = 1): void
     {
-        $this->database->exec('SET foreign_key_checks=1')->shouldBeCalledOnce();
+        $this->database->exec('SET foreign_key_checks=1')->shouldBeCalledTimes($count);
     }
 
-    private function expectDisableForeignKeyChecks(): void
+    private function expectDisableForeignKeyChecks(int $count = 1): void
     {
-        $this->database->exec('SET foreign_key_checks=0')->shouldBeCalledOnce();
+        $this->database->exec('SET foreign_key_checks=0')->shouldBeCalledTimes($count);
     }
 
     private function expectImportOfDataset(): void

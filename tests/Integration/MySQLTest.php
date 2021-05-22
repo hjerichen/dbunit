@@ -29,6 +29,16 @@ class MySQLTest extends TestCase
 
     protected function getDatasetForSetup(): Dataset
     {
+        if ($this->getName() === 'testWithForeignKeys') {
+            return new DatasetArray([
+                'product' => [
+                    ['id' => 1, 'ean' => '123', 'stock' => 0],
+                ],
+                'productExtension' => [
+                    ['id' => 1, 'productId' => 1]
+                ]
+            ]);
+        }
         return new DatasetArray([
             'product' => [
                 ['id' => 1, 'ean' => '123', 'stock' => 0],
@@ -58,6 +68,21 @@ class MySQLTest extends TestCase
             'product' => [
                 ['id' => 1, 'ean' => '123'],
                 ['id' => 2, 'ean' => '456'],
+            ]
+        ]);
+
+        $this->expectNoException();
+        $this->assertDatasetEqualsCurrent($expected);
+    }
+
+    public function testWithForeignKeys(): void
+    {
+        $expected = new DatasetArray([
+            'product' => [
+                ['id' => 1, 'ean' => '123', 'stock' => 0],
+            ],
+            'productExtension' => [
+                ['id' => 1, 'productId' => 1]
             ]
         ]);
 
