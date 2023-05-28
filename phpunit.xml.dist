@@ -13,7 +13,7 @@
         </include>
     </coverage>
     <php>
-        <const name="MYSQL_DSN" value="mysql:dbname=dbunit"/>
+        <const name="MYSQL_DSN" value="mysql:host=127.0.0.1;port=3306;dbname=dbunit"/>
         <const name="MYSQL_USER" value="root"/>
         <const name="MYSQL_PASS" value="root"/>
     </php>
