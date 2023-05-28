@@ -7,25 +7,36 @@ on:
 jobs:
 
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     strategy:
       matrix:
         php:
           - 7.4
           - 8.0
+          - 8.1
+          - 8.2
         dependencies:
           - "--prefer-lowest"
           - ""
 
     name: PHP ${{ matrix.php }} Test ${{ matrix.dependencies }}
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php  }}
           coverage: none
@@ -35,10 +46,10 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
@@ -53,32 +64,41 @@ jobs:
 
       - name: Setup MySQL
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "SELECT @@VERSION"
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "CREATE DATABASE dbunit;"
 
       - name: Run Tests
         run: vendor/bin/phpunit
 
   coverage:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     name: Code Coverage
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
-        uses: shivammathur/setup-php@2.9.0
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
           coverage: pcov
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-coverage-composer-${{ hashFiles('**/composer.json') }}
@@ -89,8 +109,8 @@ jobs:
 
       - name: Setup MySQL
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "SELECT @@VERSION"
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "CREATE DATABASE dbunit;"
 
       - name: Code coverage
         run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
