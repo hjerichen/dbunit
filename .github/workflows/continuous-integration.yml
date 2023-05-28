@@ -7,15 +7,13 @@ on:
 jobs:
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
         php:
           - 7.4
           - 8.0
-          - 8.1
-          - 8.2
         dependencies:
           - "--prefer-lowest"
           - ""
@@ -24,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@2.9.0
         with:
           php-version: ${{ matrix.php  }}
           coverage: none
@@ -37,10 +35,10 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
@@ -53,29 +51,34 @@ jobs:
         env:
           DEPENDENCIES: ${{ matrix.dependencies}}
 
+      - name: Setup MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
+
       - name: Run Tests
         run: vendor/bin/phpunit
 
   coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-18.04
     name: Code Coverage
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@2.9.0
         with:
-          php-version: 8.1
+          php-version: 7.4
           coverage: pcov
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-coverage-composer-${{ hashFiles('**/composer.json') }}
@@ -83,6 +86,11 @@ jobs:
 
       - name: Install Dependencies
         run: composer update
+
+      - name: Setup MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE dbunit;' -uroot -proot
 
       - name: Code coverage
         run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
