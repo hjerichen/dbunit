@@ -4,6 +4,7 @@ namespace HJerichen\DBUnit\Tests\Integration;
 
 use HJerichen\DBUnit\Dataset\Dataset;
 use HJerichen\DBUnit\Dataset\DatasetArray;
+use HJerichen\DBUnit\Dataset\DatasetComposite;
 use HJerichen\DBUnit\MySQLTestCaseTrait;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +38,20 @@ class MySQLTest extends TestCase
                 'productExtension' => [
                     ['id' => 1, 'productId' => 1]
                 ]
+            ]);
+        }
+        if ($this->getName() === 'testWithMultipleDatasets') {
+            return new DatasetComposite([
+                new DatasetArray([
+                    'product' => [
+                        ['id' => 1, 'ean' => '123', 'stock' => 0],
+                    ]
+                ]),
+                new DatasetArray([
+                    'product' => [
+                        ['id' => 2, 'ean' => '456', 'stock' => 10],
+                    ]
+                ]),
             ]);
         }
         return new DatasetArray([
@@ -86,6 +101,24 @@ class MySQLTest extends TestCase
             ]
         ]);
 
+        $this->expectNoException();
+        $this->assertDatasetEqualsCurrent($expected);
+    }
+
+    public function testWithMultipleDatasets(): void
+    {
+        $expected = new DatasetComposite([
+            new DatasetArray([
+                'product' => [
+                    ['id' => 1, 'ean' => '123', 'stock' => 0],
+                ]
+            ]),
+            new DatasetArray([
+                'product' => [
+                    ['id' => 2, 'ean' => '456', 'stock' => 10],
+                ]
+            ]),
+        ]);
         $this->expectNoException();
         $this->assertDatasetEqualsCurrent($expected);
     }
