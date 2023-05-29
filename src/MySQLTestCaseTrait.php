@@ -24,10 +24,7 @@ trait MySQLTestCaseTrait
     protected function setUp(): void
     {
         parent::setUp();
-        $dataset = $this->getDatasetForSetup();
-
-        $setupOperation = $this->getSetupOperation();
-        $setupOperation->execute($dataset);
+        $this->setUpDatabase();
     }
 
     protected function tearDown(): void
@@ -44,6 +41,13 @@ trait MySQLTestCaseTrait
 
         $comparator = new DatabaseDatasetComparator();
         $comparator->assertEquals($expected, $actual);
+    }
+
+    private function setUpDatabase(): void {
+        $dataset = $this->getDatasetForSetup();
+
+        $setupOperation = $this->getSetupOperation();
+        $setupOperation->execute($dataset);
     }
 
     private function getSetupOperation(): SetupOperation
