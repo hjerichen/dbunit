@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+/** @noinspection PhpUnnecessaryLocalVariableInspection */
+declare(strict_types=1);
 
 namespace HJerichen\DBUnit;
 
@@ -9,6 +11,7 @@ use HJerichen\DBUnit\Dataset\Dataset;
 use HJerichen\DBUnit\Importer\ImporterPDO;
 use HJerichen\DBUnit\Setup\SetupOperation;
 use HJerichen\DBUnit\Setup\SetupOperationPDO;
+use HJerichen\DBUnit\Setup\SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL;
 use HJerichen\DBUnit\Teardown\TeardownOperation;
 use PDO;
 
@@ -56,7 +59,10 @@ trait MySQLTestCaseTrait
 
         $databaseCleaner = new DatabaseCleanerMySQL($database);
         $importer = new ImporterPDO($database);
-        return new SetupOperationPDO($databaseCleaner, $importer);
+
+        $operation = new SetupOperationPDO($databaseCleaner, $importer);
+        $operation = new SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL($operation, $database);
+        return $operation;
     }
 
     private function getTeardownOperation(): TeardownOperation

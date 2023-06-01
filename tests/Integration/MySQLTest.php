@@ -23,6 +23,7 @@ class MySQLTest extends TestCase
     {
         if (!isset($this->database)) {
             $this->database = new PDO(MYSQL_DSN, MYSQL_USER, MYSQL_PASS);
+            $this->database->exec("SET SESSION sql_mode='STRICT_TRANS_TABLES'");
             $this->createTables();
         }
         return $this->database;
