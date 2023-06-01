@@ -54,7 +54,7 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements Setu
     {
         if (!isset($this->currentSQLMode) || $this->currentSQLMode === '') return;
         $sqlMode = $this->database->quote($this->currentSQLMode);
-        $this->database->exec("SET SESSION sql_mode='$sqlMode'");
+        $this->database->exec("SET SESSION sql_mode=$sqlMode");
     }
 
     private function cleanup(): void

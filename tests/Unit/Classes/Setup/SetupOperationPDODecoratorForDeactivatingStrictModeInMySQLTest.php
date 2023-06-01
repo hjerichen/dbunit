@@ -31,7 +31,7 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQLTest extends Tes
         parent::setUp();
         $this->setUpOperation = $this->prophesize(SetupOperation::class);
         $this->database = $this->prophesize(PDO::class);
-        $this->database->quote(Argument::any())->will(fn(array $parameters): string => "$parameters[0]Quoted");
+        $this->database->quote(Argument::any())->will(fn(array $parameters): string => "'$parameters[0]'");
 
         $this->dataset = new DatasetArray(['user' => ['id' => 1]]);
 
@@ -51,11 +51,11 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQLTest extends Tes
 
     public function test_execute_forSetSQLMode(): void
     {
-        $this->setUpSqlMode('SomeMode');
+        $this->setUpSqlMode("SomeMode");
 
         $this->expectRemovingSqlMode();
         $this->expectCallingSetUpOperation();
-        $this->expectRestoringSqlMode('SomeModeQuoted');
+        $this->expectRestoringSqlMode("'SomeMode'");
 
         $this->decorator->execute($this->dataset);
     }
@@ -98,6 +98,6 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQLTest extends Tes
 
     private function expectRestoringSqlMode(string $sqlMode): void
     {
-        $this->database->exec("SET SESSION sql_mode='$sqlMode'")->shouldBeCalledOnce();
+        $this->database->exec("SET SESSION sql_mode=$sqlMode")->shouldBeCalledOnce();
     }
 }
