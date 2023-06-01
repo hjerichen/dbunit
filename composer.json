@@ -14,7 +14,11 @@
     },
     "autoload": {
         "psr-4": {
-            "HJerichen\\DBUnit\\": "./src/",
+            "HJerichen\\DBUnit\\": "./src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "HJerichen\\DBUnit\\Tests\\": "./tests/"
         }
     },
