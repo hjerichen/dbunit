@@ -10,12 +10,11 @@ use PDO;
  */
 class DatabaseDatasetPDO implements DatabaseDataset
 {
-    private PDO $database;
     private array $tableColumns = [];
 
-    public function __construct(PDO $database)
-    {
-        $this->database = $database;
+    public function __construct(
+        private readonly PDO $database
+    ) {
     }
 
     public function setTableColumns(string $tableName, array $columns): void
@@ -26,7 +25,7 @@ class DatabaseDatasetPDO implements DatabaseDataset
     public function getTables(): array
     {
         $tableNames = array_keys($this->tableColumns);
-        return array_map([$this, 'buildTable'], $tableNames);
+        return array_map($this->buildTable(...), $tableNames);
     }
 
     private function buildTable(string $tableName): Table

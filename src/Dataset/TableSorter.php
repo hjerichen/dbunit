@@ -18,14 +18,14 @@ class TableSorter
     private function sortColumns(array $valueSets): array
     {
         foreach ($valueSets as &$valueSet) {
-            uksort($valueSet, [$this, 'compareColumnNames']);
+            uksort($valueSet, $this->compareColumnNames(...));
         }
         return $valueSets;
     }
 
     private function sortValueSets(array $valueSets): array
     {
-        usort($valueSets, [$this, 'compareValueSets']);
+        usort($valueSets, $this->compareValueSets(...));
         return $valueSets;
     }
 

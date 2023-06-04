@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+/** @noinspection PhpUnnecessaryLocalVariableInspection */
+declare(strict_types=1);
 
 namespace HJerichen\DBUnit\Dataset;
 
@@ -7,13 +9,10 @@ namespace HJerichen\DBUnit\Dataset;
  */
 class Table
 {
-    private string $name;
-    private array $valueSets;
-
-    public function __construct(string $name, array $valueSets)
-    {
-        $this->name = $name;
-        $this->valueSets = $valueSets;
+    public function __construct(
+        private readonly string $name,
+        private array $valueSets,
+    ) {
     }
 
     public function setValueSets(array $valueSets): void
@@ -44,7 +43,7 @@ class Table
 
     public function getNormalizedValueSets(): array
     {
-        return array_map([$this, 'normalizeValueSet'], $this->valueSets);
+        return array_map($this->normalizeValueSet(...), $this->valueSets);
     }
 
     private function normalizeValueSet(array $valueSet): array

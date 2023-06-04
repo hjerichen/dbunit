@@ -24,12 +24,7 @@ class DatabaseDatasetComparator
         $this->comparator->setFactory(Factory::getInstance());
     }
 
-    /**
-     * @param Dataset $expected
-     * @param DatabaseDataset $actual
-     *
-     * @throws ComparisonFailure
-     */
+    /** @throws ComparisonFailure */
     public function assertEquals(Dataset $expected, DatabaseDataset $actual): void
     {
         foreach ($expected->getTables() as $expectedTable) {

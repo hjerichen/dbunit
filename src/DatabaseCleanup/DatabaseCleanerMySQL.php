@@ -9,11 +9,9 @@ use PDO;
  */
 class DatabaseCleanerMySQL implements DatabaseCleaner
 {
-    private PDO $database;
-
-    public function __construct(PDO $database)
-    {
-        $this->database = $database;
+    public function __construct(
+        private readonly PDO $database
+    ) {
     }
 
     public function execute(): void

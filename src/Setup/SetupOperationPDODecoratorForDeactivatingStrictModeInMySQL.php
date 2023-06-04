@@ -7,18 +7,13 @@ use PDO;
 
 class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements SetupOperation
 {
-    private SetupOperation $setupOperation;
-    private PDO $database;
-
     private Dataset $dataset;
     private string $currentSQLMode;
 
     public function __construct(
-        SetupOperation $setupOperation,
-        PDO $database
+        private readonly SetupOperation $setupOperation,
+        private readonly PDO $database
     ) {
-        $this->setupOperation = $setupOperation;
-        $this->database = $database;
     }
 
     public function execute(Dataset $dataset): void

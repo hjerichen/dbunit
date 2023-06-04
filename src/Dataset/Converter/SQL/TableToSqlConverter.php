@@ -47,7 +47,7 @@ class TableToSqlConverter
     {
         $columns = '(`' . implode('`, `', $table->getColumns()) . '`)';
         $valueSets = implode(', ', $this->buildValueSetsForTable($table));
-        return "INSERT INTO `{$table->getName()}` {$columns} VALUES {$valueSets};";
+        return "INSERT INTO `{$table->getName()}` $columns VALUES $valueSets;";
     }
 
     /**
@@ -72,7 +72,7 @@ class TableToSqlConverter
     {
         $values = [];
         foreach ($valueSet as $column => $value) {
-            $values[] = ":{$column}_{$index}";
+            $values[] = ":{$column}_$index";
         }
         return $values;
     }

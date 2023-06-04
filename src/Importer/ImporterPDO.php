@@ -13,12 +13,11 @@ use PDO;
 class ImporterPDO implements Importer
 {
     private TableToSqlConverter $converter;
-    private PDO $database;
 
-    public function __construct(PDO $database)
-    {
+    public function __construct(
+        private readonly PDO $database
+    ) {
         $this->converter = new TableToSqlConverter();
-        $this->database = $database;
     }
 
     public function getDatabase(): PDO

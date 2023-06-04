@@ -4,13 +4,10 @@ namespace HJerichen\DBUnit\Dataset;
 
 class DatasetComposite implements Dataset
 {
-    /** @var list<Dataset> */
-    private array $datasets;
-
     /** @param $datasets list<Dataset> */
-    public function __construct(array $datasets)
-    {
-        $this->datasets = $datasets;
+    public function __construct(
+        private readonly array $datasets
+    ) {
     }
 
     /** @return Table[] */

@@ -23,12 +23,7 @@ class DatasetComparator
         $this->comparator->setFactory(Factory::getInstance());
     }
 
-    /**
-     * @param Dataset $expected
-     * @param Dataset $actual
-     *
-     * @throws ComparisonFailure
-     */
+    /** @throws ComparisonFailure */
     public function assertEquals(Dataset $expected, Dataset $actual): void
     {
         $expectedArray = $this->datasetToArrayConverter->convertDatasetToArray($expected);

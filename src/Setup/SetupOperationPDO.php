@@ -11,13 +11,10 @@ use HJerichen\DBUnit\Importer\ImporterPDO;
  */
 class SetupOperationPDO implements SetupOperation
 {
-    private DatabaseCleaner $databaseCleaner;
-    private ImporterPDO $importer;
-
-    public function __construct(DatabaseCleaner $databaseCleaner, ImporterPDO $importer)
-    {
-        $this->databaseCleaner = $databaseCleaner;
-        $this->importer = $importer;
+    public function __construct(
+        private readonly DatabaseCleaner $databaseCleaner,
+        private readonly ImporterPDO $importer,
+    ) {
     }
 
     public function execute(Dataset $dataset): void

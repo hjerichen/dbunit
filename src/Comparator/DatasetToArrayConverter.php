@@ -10,11 +10,9 @@ use HJerichen\DBUnit\Dataset\TableSorter;
  */
 class DatasetToArrayConverter
 {
-    private TableSorter $tableSorter;
-
-    public function __construct(TableSorter $tableSorter)
-    {
-        $this->tableSorter = $tableSorter;
+    public function __construct(
+        private readonly TableSorter $tableSorter
+    ) {
     }
 
     public function convertDatasetToArray(Dataset $dataset): array
