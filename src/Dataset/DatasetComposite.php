@@ -6,8 +6,13 @@ class DatasetComposite implements Dataset
 {
     /** @param $datasets list<Dataset> */
     public function __construct(
-        private readonly array $datasets
+        private array $datasets = []
     ) {
+    }
+
+    public function append(Dataset $dataset): void
+    {
+        $this->datasets[] = $dataset;
     }
 
     /**
