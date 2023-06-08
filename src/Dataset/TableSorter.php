@@ -4,6 +4,7 @@ namespace HJerichen\DBUnit\Dataset;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
+ * @psalm-import-type ValueSet from Table
  */
 class TableSorter
 {
@@ -15,6 +16,10 @@ class TableSorter
         $table->setValueSets($valueSets);
     }
 
+    /**
+     * @param list<ValueSet> $valueSets
+     * @return list<ValueSet>
+     */
     private function sortColumns(array $valueSets): array
     {
         foreach ($valueSets as &$valueSet) {
@@ -23,6 +28,10 @@ class TableSorter
         return $valueSets;
     }
 
+    /**
+     * @param list<ValueSet> $valueSets
+     * @return list<ValueSet>
+     */
     private function sortValueSets(array $valueSets): array
     {
         usort($valueSets, $this->compareValueSets(...));
@@ -36,6 +45,11 @@ class TableSorter
         return strcmp($name1, $name2);
     }
 
+    /**
+     * @param ValueSet $valueSet1
+     * @param ValueSet $valueSet2
+     * @return int
+     */
     private function compareValueSets(array $valueSet1, array $valueSet2): int
     {
         foreach ($valueSet1 as $column => $value1) {
@@ -46,11 +60,20 @@ class TableSorter
         return 0;
     }
 
-    private function compareValues($value1, $value2): int
+    /**
+     * @param scalar $value1
+     * @param scalar $value2
+     * @return int
+     */
+    private function compareValues(float|bool|int|string|null $value1, float|bool|int|string|null $value2): int
     {
-        if (is_numeric($value1) || is_numeric($value2)) {
-            return $value1 - $value2;
+        if (is_numeric($value1) && is_numeric($value2)) {
+            return match (true) {
+                $value1 > $value2 => 1,
+                $value1 < $value2 => -1,
+                default => 0
+            };
         }
-        return strcmp($value1, $value2);
+        return strcmp((string)$value1, (string)$value2);
     }
 }

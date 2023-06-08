@@ -18,7 +18,11 @@ class MySQLTest extends TestCase
 
     private PDO $database;
 
-    /** @noinspection PhpUndefinedConstantInspection */
+    /**
+     * @noinspection PhpUndefinedConstantInspection
+     * @psalm-suppress UndefinedConstant
+     * @psalm-suppress MixedArgument
+     */
     protected function getDatabase(): PDO
     {
         if (!isset($this->database)) {
@@ -29,6 +33,7 @@ class MySQLTest extends TestCase
         return $this->database;
     }
 
+    /** @psalm-suppress InternalMethod */
     protected function getDatasetForSetup(): Dataset
     {
         if ($this->getName() === 'testWithForeignKeys') {

@@ -9,5 +9,6 @@ use HJerichen\DBUnit\Dataset\Dataset;
  */
 interface DatabaseDataset extends Dataset
 {
-    public function setTableColumns(string $tableName, array $columns);
+    /** @param list<string> $columns */
+    public function setTableColumns(string $tableName, array $columns): void;
 }

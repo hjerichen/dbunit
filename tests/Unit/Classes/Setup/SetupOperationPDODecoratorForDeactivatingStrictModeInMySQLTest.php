@@ -33,7 +33,7 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQLTest extends Tes
         $this->database = $this->prophesize(PDO::class);
         $this->database->quote(Argument::any())->will(fn(array $parameters): string => "'$parameters[0]'");
 
-        $this->dataset = new DatasetArray(['user' => ['id' => 1]]);
+        $this->dataset = new DatasetArray(['user' => [['id' => 1]]]);
 
         $this->decorator = $this->buildNewInstanceForTest();
     }

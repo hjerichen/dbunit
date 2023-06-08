@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
+ * @psalm-import-type DatasetArrayData from DatasetArray
  */
 class DatasetYaml extends DatasetArray
 {
@@ -15,8 +16,10 @@ class DatasetYaml extends DatasetArray
         parent::__construct($data);
     }
 
+    /** @return DatasetArrayData */
     private function getData(string $yamlFile): array
     {
+        /** @var DatasetArrayData|null $tables */
         $tables = Yaml::parseFile($yamlFile);
         return $tables ?? [];
     }

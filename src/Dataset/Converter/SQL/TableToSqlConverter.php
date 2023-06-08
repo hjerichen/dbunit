@@ -7,6 +7,7 @@ use HJerichen\DBUnit\Dataset\TableSplitter;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
+ * @psalm-import-type ValueSet from Table
  */
 class TableToSqlConverter
 {
@@ -52,26 +53,27 @@ class TableToSqlConverter
 
     /**
      * @param Table $table
-     * @return string[]
+     * @return list<string>
      */
     private function buildValueSetsForTable(Table $table): array
     {
         $valueSets = [];
         foreach ($table->getValueSets() as $index => $valueSet) {
-            $valueSets[] = '(' . implode(', ', $this->buildValueNamesForValueSet($valueSet, $index)) . ')';
+            $columns = array_keys($valueSet);
+            $valueSets[] = '(' . implode(', ', $this->buildValueNamesForValueSet($columns, $index)) . ')';
         }
         return $valueSets;
     }
 
     /**
-     * @param array $valueSet
+     * @param list<string> $columns
      * @param int $index
-     * @return string[]
+     * @return list<string>
      */
-    private function buildValueNamesForValueSet(array $valueSet, int $index): array
+    private function buildValueNamesForValueSet(array $columns, int $index): array
     {
         $values = [];
-        foreach ($valueSet as $column => $value) {
+        foreach ($columns as $column) {
             $values[] = ":{$column}_$index";
         }
         return $values;
@@ -93,7 +95,8 @@ class TableToSqlConverter
     {
         $valueNames = [];
         foreach ($table->getValueSets() as $index => $valueSet) {
-            $valueNames[] = $this->buildValueNamesForValueSet($valueSet, $index);
+            $columns = array_keys($valueSet);
+            $valueNames[] = $this->buildValueNamesForValueSet($columns, $index);
         }
         return array_merge(...$valueNames);
     }

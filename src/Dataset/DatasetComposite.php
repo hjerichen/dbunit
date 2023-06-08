@@ -10,11 +10,16 @@ class DatasetComposite implements Dataset
     ) {
     }
 
-    /** @return Table[] */
+    /**
+     * @return list<Table>
+     * @noinspection PhpRedundantVariableDocTypeInspection
+     */
     public function getTables(): array
     {
         /** @var Table[] $tables */
         $tables = [];
+
+        /** @var Dataset $dataset */
         foreach ($this->datasets as $dataset) {
             foreach ($dataset->getTables() as $table) {
                 if (!isset($tables[$table->getName()])) {

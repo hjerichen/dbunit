@@ -16,6 +16,7 @@ class ImporterPDOTest extends TestCase
     use ProphecyTrait;
 
     private ImporterPDO $importer;
+    /** @var ObjectProphecy<PDO> */
     private ObjectProphecy $database;
 
     protected function setUp(): void

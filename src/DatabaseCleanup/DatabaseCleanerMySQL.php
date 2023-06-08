@@ -27,7 +27,11 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
         }
     }
 
-    /** @return string[] */
+    /**
+     * @return list<string>
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function getTablesContainingData(): array
     {
         $databaseName = $this->getDatabaseName();
@@ -46,6 +50,10 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
         }
     }
 
+    /**
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MixedReturnStatement
+     */
     private function getDatabaseName(): string
     {
         return $this->database->query('select database()')->fetchColumn();

@@ -31,7 +31,9 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements Setu
 
     private function fetchCurrentSQLMode(): void
     {
-        $this->currentSQLMode = trim($this->database->query("SELECT @@sql_mode")->fetchColumn());
+        /** @var string $sqlMode */
+        $sqlMode = $this->database->query("SELECT @@sql_mode")->fetchColumn();
+        $this->currentSQLMode = trim($sqlMode);
     }
 
     private function deactivateStrictMode(): void
@@ -47,6 +49,7 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements Setu
 
     private function restoreSQLMode(): void
     {
+        /** @psalm-suppress TypeDoesNotContainType */
         if (!isset($this->currentSQLMode) || $this->currentSQLMode === '') return;
         $sqlMode = $this->database->quote($this->currentSQLMode);
         $this->database->exec("SET SESSION sql_mode=$sqlMode");

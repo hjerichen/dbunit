@@ -7,6 +7,6 @@ namespace HJerichen\DBUnit\Dataset;
  */
 interface Dataset
 {
-    /** @return Table[] */
+    /** @return list<Table> */
     public function getTables(): array;
 }

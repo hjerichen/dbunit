@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+/** @noinspection PhpVoidFunctionResultUsedInspection */
+declare(strict_types=1);
 
 namespace HJerichen\DBUnit\Tests\Unit\Classes\Comparator;
 
@@ -19,6 +21,7 @@ class DatabaseDatasetComparatorTest extends TestCase
     use ProphecyTrait;
 
     private DatabaseDatasetComparator $comparator;
+    /** @var ObjectProphecy<DatabaseDataset>  */
     private ObjectProphecy $databaseDataset;
 
     protected function setUp(): void

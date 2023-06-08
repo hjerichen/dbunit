@@ -7,9 +7,11 @@ use PDO;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
+ * @psalm-import-type ValueSet from Table
  */
 class DatabaseDatasetPDO implements DatabaseDataset
 {
+    /** @var array<string, list<string>> */
     private array $tableColumns = [];
 
     public function __construct(
@@ -17,6 +19,7 @@ class DatabaseDatasetPDO implements DatabaseDataset
     ) {
     }
 
+    /** @param list<string> $columns */
     public function setTableColumns(string $tableName, array $columns): void
     {
         $this->tableColumns[$tableName] = $columns;
@@ -34,13 +37,18 @@ class DatabaseDatasetPDO implements DatabaseDataset
         return new Table($tableName, $valueSets);
     }
 
+    /**
+     * @return list<ValueSet>
+     * @psalm-suppress LessSpecificReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
+     */
     private function getValueSetsForTable(string $tableName): array
     {
         $sql = $this->buildSQLForTable($tableName);
         return $this->database->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    private function buildSQLForTable($tableName): string
+    private function buildSQLForTable(string $tableName): string
     {
         $columns = $this->tableColumns[$tableName];
         $columnsSQL = '`' . implode('`, `', $columns) . '`';

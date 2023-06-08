@@ -19,6 +19,7 @@ class ImportYamlTest extends TestCase
     use ProphecyTrait;
 
     private ImporterPDO $importer;
+    /** @var ObjectProphecy<PDO>  */
     private ObjectProphecy $database;
 
     protected function setUp(): void
@@ -154,6 +155,7 @@ class ImportYamlTest extends TestCase
         $this->database->exec(Argument::any())->shouldNotBeCalled();
     }
 
+    /** @param list<list<array<string,mixed>>> $data */
     private function expectImport(array $data): void
     {
         $sqlCommands = file_get_contents($this->getSqlFile());
@@ -172,11 +174,13 @@ class ImportYamlTest extends TestCase
         return new DatasetYaml($this->getYamlFile());
     }
 
+    /** @psalm-suppress InternalMethod */
     private function getYamlFile(): string
     {
         return __DIR__ . "/../Files/{$this->getName()}.yml";
     }
 
+    /** @psalm-suppress InternalMethod */
     private function getSqlFile(): string
     {
         return __DIR__ . "/../Files/{$this->getName()}.sql";

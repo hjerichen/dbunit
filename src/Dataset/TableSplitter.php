@@ -4,18 +4,20 @@ namespace HJerichen\DBUnit\Dataset;
 
 /**
  * @author Heiko Jerichen <heiko@jerichen.de>
+ * @psalm-import-type ValueSet from Table
  */
 class TableSplitter
 {
     private Table $table;
 
-    /** @var Table[] */
+    /** @var list<Table> */
     private array $newTables = [];
+    /** @var array<string,list<ValueSet>> */
     private array $groupedValueSets = [];
 
     /**
      * @param Table $table
-     * @return Table[]
+     * @return list<Table>
      */
     public function splitTable(Table $table): array
     {
