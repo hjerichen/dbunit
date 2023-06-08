@@ -68,6 +68,37 @@ jobs:
       - name: Run Tests
         run: vendor/bin/phpunit
 
+  psalm:
+    name: Psalm
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: none
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-psalm-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-psalm-composer-
+
+      - name: Install Dependencies
+        run: composer update
+
+      - name: Run psalm
+        run: vendor/bin/psalm --output-format=github
+
   coverage:
     runs-on: ubuntu-22.04
     name: Code Coverage
