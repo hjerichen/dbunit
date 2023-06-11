@@ -17,6 +17,8 @@ Use the trait MySQLTestCaseTrait in PHPUnit Test Cases to test with MySQL, or bu
 ```php
 <?php
 
+use HJerichen\DBUnit\Dataset\Attribute\DatasetForExpected
+use HJerichen\DBUnit\Dataset\Attribute\DatasetForSetup
 use HJerichen\DBUnit\Dataset\Dataset;
 use HJerichen\DBUnit\Dataset\DatasetArray;
 use HJerichen\DBUnit\MySQLTestCaseTrait;
@@ -40,7 +42,7 @@ class MySQLTest extends TestCase
 
     protected function getDatasetForSetup(): Dataset
     {
-        return new DatasetArray([
+        return $this->getDatasetForSetupFromAttribute() ?? new DatasetArray([
             'product' => [
                 ['id' => 1, 'ean' => '123', 'stock' => 0],
                 ['id' => 2, 'ean' => '456', 'stock' => 10],
@@ -58,7 +60,26 @@ class MySQLTest extends TestCase
                 ['id' => 2, 'ean' => '456', 'stock' => 10],
             ]
         ]);
-        
+        $this->assertDatasetEqualsCurrentOne($expected);
+    }
+
+    #[DatasetForSetup([
+        'product' => [
+            ['id' => 1, 'ean' => '123', 'stock' => 0],
+        ],
+    ])]
+    #[DatasetForExpected([
+        'product' => [
+            ['id' => 1, 'ean' => '123', 'stock' => 0],
+        ],
+    ])]
+    public function testImportAndCompare2(): void
+    {
+        $expected = $this->getDatasetForExpectedFromAttribute();
+        $this->assertDatasetEqualsCurrentOne($expected);
+    }
+    
+    private function assertDatasetEqualsCurrentOne(DatasetArray $expected):void{
         try {
             $this->assertDatasetEqualsCurrent($expected);
         } catch (ComparisonFailure $failure) {
@@ -71,8 +92,8 @@ class MySQLTest extends TestCase
 ### Datasets
 
 Supported Datasets are:  
-DatasetArray  
-DatasetYaml  
+DatasetArray (also via test method attribute)   
+DatasetYaml
 
 ## License and authors
 
