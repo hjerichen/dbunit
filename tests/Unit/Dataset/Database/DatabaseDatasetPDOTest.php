@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Dataset\Database;
+namespace HJerichen\DBUnit\Tests\Unit\Dataset\Database;
 
 use HJerichen\DBUnit\Dataset\Database\DatabaseDataset;
 use HJerichen\DBUnit\Dataset\Database\DatabaseDatasetPDO;

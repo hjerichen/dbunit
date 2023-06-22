@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Dataset\Attribute;
+namespace HJerichen\DBUnit\Tests\Unit\Dataset\Attribute;
 
 use HJerichen\DBUnit\Dataset\Attribute\DatasetForExpected;
 use HJerichen\DBUnit\Dataset\DatasetArray;
 use PHPUnit\Framework\TestCase;
 
-class DatasetForSetupTest extends TestCase
+class DatasetForExpectedTest extends TestCase
 {
     public function test_getDataset(): void
     {

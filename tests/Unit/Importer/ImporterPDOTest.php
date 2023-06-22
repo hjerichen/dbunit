@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Importer;
+namespace HJerichen\DBUnit\Tests\Unit\Importer;
 
 use HJerichen\DBUnit\Importer\ImporterPDO;
 use PDO;

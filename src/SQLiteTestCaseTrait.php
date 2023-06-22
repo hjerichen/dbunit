@@ -1,30 +1,25 @@
 <?php
-/** @noinspection PhpUnnecessaryLocalVariableInspection */
-declare(strict_types=1);
 
 namespace HJerichen\DBUnit;
 
 use HJerichen\DBUnit\Comparator\DatabaseDatasetComparator;
-use HJerichen\DBUnit\DatabaseCleanup\DatabaseCleanerMySQL;
+use HJerichen\DBUnit\DatabaseCleanup\DatabaseCleanerSQLite;
 use HJerichen\DBUnit\Dataset\Attribute\DatasetAttribute;
 use HJerichen\DBUnit\Dataset\Attribute\DatasetForExpected;
 use HJerichen\DBUnit\Dataset\Attribute\DatasetForSetup;
 use HJerichen\DBUnit\Dataset\Database\DatabaseDatasetPDO;
 use HJerichen\DBUnit\Dataset\Dataset;
 use HJerichen\DBUnit\Dataset\DatasetComposite;
-use HJerichen\DBUnit\ForeignKey\ForeignKeyHandlerMySQL;
+use HJerichen\DBUnit\ForeignKey\ForeignKeyHandlerEmpty;
 use HJerichen\DBUnit\Importer\ImporterPDO;
 use HJerichen\DBUnit\Setup\SetupOperation;
 use HJerichen\DBUnit\Setup\SetupOperationConstruct;
-use HJerichen\DBUnit\StrictMode\StrictModeHandlerMySQL;
+use HJerichen\DBUnit\StrictMode\StrictModeHandlerEmpty;
 use HJerichen\DBUnit\Teardown\TeardownOperation;
 use PDO;
 use ReflectionMethod;
 
-/**
- * @author Heiko Jerichen <heiko@jerichen.de>
- */
-trait MySQLTestCaseTrait
+trait SQLiteTestCaseTrait
 {
     abstract protected function getDatasetForSetup(): Dataset;
 
@@ -75,9 +70,9 @@ trait MySQLTestCaseTrait
         $database = $this->getDatabase();
 
         return new SetupOperationConstruct(
-            new StrictModeHandlerMySQL($database),
-            new ForeignKeyHandlerMySQL($database),
-            new DatabaseCleanerMySQL($database),
+            new StrictModeHandlerEmpty(),
+            new ForeignKeyHandlerEmpty(),
+            new DatabaseCleanerSQLite($database),
             new ImporterPDO($database)
         );
     }
@@ -85,7 +80,7 @@ trait MySQLTestCaseTrait
     private function getTeardownOperation(): TeardownOperation
     {
         $database = $this->getDatabase();
-        return new DatabaseCleanerMySQL($database);
+        return new DatabaseCleanerSQLite($database);
     }
 
     /**

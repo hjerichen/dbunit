@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS `productExtension`;
+DROP TABLE IF EXISTS `product`;
+
+CREATE TABLE `product`
+(
+    `id`    INTEGER PRIMARY KEY AUTOINCREMENT,
+    `ean`   TEXT    DEFAULT NULL,
+    `stock` INTEGER DEFAULT NULL,
+    `other` INTEGER
+);
+
+CREATE TABLE `productExtension`
+(
+    `id`        INTEGER PRIMARY KEY AUTOINCREMENT,
+    `productId` INTEGER NOT NULL
+);

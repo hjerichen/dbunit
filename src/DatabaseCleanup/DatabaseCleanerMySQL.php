@@ -2,6 +2,8 @@
 
 namespace HJerichen\DBUnit\DatabaseCleanup;
 
+use HJerichen\DBUnit\ForeignKey\ForeignKeyHandler;
+use HJerichen\DBUnit\ForeignKey\ForeignKeyHandlerMySQL;
 use PDO;
 
 /**
@@ -9,9 +11,12 @@ use PDO;
  */
 class DatabaseCleanerMySQL implements DatabaseCleaner
 {
+    private readonly ForeignKeyHandler $foreignKeyHandler;
+
     public function __construct(
         private readonly PDO $database
     ) {
+        $this->foreignKeyHandler = new ForeignKeyHandlerMySQL($this->database);
     }
 
     public function execute(): void
@@ -61,11 +66,11 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
 
     private function enableForeignKeyChecks(): void
     {
-        $this->database->exec('SET foreign_key_checks=1');
+        $this->foreignKeyHandler->enableForeignKeyCheck();
     }
 
     private function disableForeignKeyChecks(): void
     {
-        $this->database->exec('SET foreign_key_checks=0');
+        $this->foreignKeyHandler->disableForeignKeyCheck();
     }
 }

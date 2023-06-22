@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Comparator;
+namespace HJerichen\DBUnit\Tests\Unit\Comparator;
 
 use HJerichen\DBUnit\Comparator\DatasetComparator;
 use HJerichen\DBUnit\Dataset\DatasetArray;

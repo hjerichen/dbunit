@@ -1,32 +1,29 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Setup;
+namespace HJerichen\DBUnit\StrictMode;
 
-use HJerichen\DBUnit\Dataset\Dataset;
 use PDO;
 
-class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements SetupOperation
+class StrictModeHandlerMySQL implements StrictModeHandler
 {
-    private Dataset $dataset;
     private string $currentSQLMode;
 
     public function __construct(
-        private readonly SetupOperation $setupOperation,
         private readonly PDO $database
     ) {
     }
 
-    public function execute(Dataset $dataset): void
+    public function disableStrictMode(): void
     {
-        try {
-            $this->dataset = $dataset;
-            $this->fetchCurrentSQLMode();
-            $this->deactivateStrictMode();
-            $this->executeSetUpOperation();
-        } finally {
-            $this->restoreSQLMode();
-            $this->cleanup();
-        }
+        $this->fetchCurrentSQLMode();
+        $this->removeSQLMode();
+    }
+
+    public function restoreStrictMode(): void
+    {
+        if (!isset($this->currentSQLMode)) return;
+        $this->restoreSQLMode();
+        $this->cleanup();
     }
 
     private function fetchCurrentSQLMode(): void
@@ -36,15 +33,10 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements Setu
         $this->currentSQLMode = trim($sqlMode);
     }
 
-    private function deactivateStrictMode(): void
+    private function removeSQLMode(): void
     {
         if ($this->currentSQLMode === '') return;
         $this->database->exec("SET SESSION sql_mode=''");
-    }
-
-    private function executeSetUpOperation(): void
-    {
-        $this->setupOperation->execute($this->dataset);
     }
 
     private function restoreSQLMode(): void
@@ -57,9 +49,6 @@ class SetupOperationPDODecoratorForDeactivatingStrictModeInMySQL implements Setu
 
     private function cleanup(): void
     {
-        unset(
-            $this->currentSQLMode,
-            $this->dataset,
-        );
+        unset($this->currentSQLMode);
     }
 }

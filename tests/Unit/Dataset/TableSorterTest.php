@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Dataset;
+namespace HJerichen\DBUnit\Tests\Unit\Dataset;
 
 use HJerichen\DBUnit\Dataset\Table;
 use HJerichen\DBUnit\Dataset\TableSorter;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Dataset\Converter\SQL;
+namespace HJerichen\DBUnit\Tests\Unit\Dataset\Converter\SQL;
 
 use HJerichen\DBUnit\Dataset\Converter\SQL\SqlQuerySet;
 use HJerichen\DBUnit\Dataset\Converter\SQL\TableToSqlConverter;

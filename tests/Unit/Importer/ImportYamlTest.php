@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit;
+namespace HJerichen\DBUnit\Tests\Unit\Importer;
 
-use HJerichen\DBUnit\Importer\ImporterPDO;
 use HJerichen\DBUnit\Dataset\DatasetYaml;
+use HJerichen\DBUnit\Importer\ImporterPDO;
 use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
@@ -177,12 +177,12 @@ class ImportYamlTest extends TestCase
     /** @psalm-suppress InternalMethod */
     private function getYamlFile(): string
     {
-        return __DIR__ . "/../Files/{$this->getName()}.yml";
+        return __DIR__ . "/../../Files/{$this->getName()}.yml";
     }
 
     /** @psalm-suppress InternalMethod */
     private function getSqlFile(): string
     {
-        return __DIR__ . "/../Files/{$this->getName()}.sql";
+        return __DIR__ . "/../../Files/{$this->getName()}.sql";
     }
 }

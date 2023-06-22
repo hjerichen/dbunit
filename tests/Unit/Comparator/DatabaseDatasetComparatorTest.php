@@ -2,7 +2,7 @@
 /** @noinspection PhpVoidFunctionResultUsedInspection */
 declare(strict_types=1);
 
-namespace HJerichen\DBUnit\Tests\Unit\Classes\Comparator;
+namespace HJerichen\DBUnit\Tests\Unit\Comparator;
 
 use HJerichen\DBUnit\Comparator\DatabaseDatasetComparator;
 use HJerichen\DBUnit\Dataset\Database\DatabaseDataset;
