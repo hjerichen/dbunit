@@ -92,7 +92,7 @@ trait SQLiteTestCaseTrait
      */
     private function getDatasetFromAttribute(string $attributeClass): ?Dataset
     {
-        $reflection = new ReflectionMethod($this, $this->getName());
+        $reflection = new ReflectionMethod($this, $this->getNameOfCurrentTest());
         $attributes = $reflection->getAttributes($attributeClass);
         if (count($attributes) === 0) return null;
 
@@ -101,5 +101,11 @@ trait SQLiteTestCaseTrait
             $dataset->append($attribute->newInstance()->getDataset());
         }
         return $dataset;
+    }
+
+    /** @psalm-suppress MixedReturnStatement,InternalMethod */
+    private function getNameOfCurrentTest(): string
+    {
+        return method_exists($this, 'getName') ? $this->getName() : $this->name();
     }
 }

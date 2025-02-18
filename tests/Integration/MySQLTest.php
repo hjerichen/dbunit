@@ -44,7 +44,7 @@ class MySQLTest extends TestCase
     /** @psalm-suppress InternalMethod */
     protected function getDatasetForSetup(): Dataset
     {
-        if ($this->getName() === 'testWithMultipleDatasets') {
+        if ($this->getNameOfCurrentTest() === 'testWithMultipleDatasets') {
             return new DatasetComposite([
                 new DatasetArray([
                     'product' => [
@@ -140,6 +140,8 @@ class MySQLTest extends TestCase
     private function createTables(): void
     {
         $sql = file_get_contents(__DIR__ . '/MySQLTestTables.sql');
+        assert($sql !== false);
+
         $this->database->exec($sql);
     }
 

@@ -158,8 +158,11 @@ class ImportYamlTest extends TestCase
     /** @param list<list<array<string,mixed>>> $data */
     private function expectImport(array $data): void
     {
-        $sqlCommands = file_get_contents($this->getSqlFile());
-        $sqlCommands = explode("\n", $sqlCommands);
+        $sqlCommandsString = file_get_contents($this->getSqlFile());
+        assert($sqlCommandsString !== false);
+
+        $sqlCommands = explode("\n", $sqlCommandsString);
+
         for ($i = 0, $max = count($sqlCommands); $i < $max; $i++) {
             $sql = $sqlCommands[$i];
             $values = array_merge(...$data[$i]);
@@ -177,12 +180,18 @@ class ImportYamlTest extends TestCase
     /** @psalm-suppress InternalMethod */
     private function getYamlFile(): string
     {
-        return __DIR__ . "/../../Files/{$this->getName()}.yml";
+        return __DIR__ . "/../../Files/{$this->getNameOfCurrentTest()}.yml";
     }
 
     /** @psalm-suppress InternalMethod */
     private function getSqlFile(): string
     {
-        return __DIR__ . "/../../Files/{$this->getName()}.sql";
+        return __DIR__ . "/../../Files/{$this->getNameOfCurrentTest()}.sql";
+    }
+
+    /** @psalm-suppress MixedReturnStatement,InternalMethod */
+    private function getNameOfCurrentTest(): string
+    {
+        return method_exists($this, 'getName') ? $this->getName() : $this->name();
     }
 }

@@ -38,7 +38,7 @@ class SQLiteTest extends TestCase
     /** @psalm-suppress InternalMethod */
     protected function getDatasetForSetup(): Dataset
     {
-        if ($this->getName() === 'testWithMultipleDatasets') {
+        if ($this->getNameOfCurrentTest() === 'testWithMultipleDatasets') {
             return new DatasetComposite([
                 new DatasetArray([
                     'product' => [
@@ -134,6 +134,8 @@ class SQLiteTest extends TestCase
     private function createTables(): void
     {
         $sql = file_get_contents(__DIR__ . '/SQLiteTestTables.sqlite');
+        assert($sql !== false);
+
         $this->database->exec($sql);
     }
 
