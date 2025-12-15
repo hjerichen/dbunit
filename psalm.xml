@@ -1,30 +1,35 @@
 <?xml version="1.0"?>
 <!--suppress XmlDefaultAttributeValue -->
 <psalm
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns="https://getpsalm.org/schema/config"
-		xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-		errorLevel="1"
-		findUnusedBaselineEntry="true"
-		findUnusedCode="true"
-		ensureOverrideAttributes="false"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        errorLevel="1"
+        findUnusedBaselineEntry="true"
+        findUnusedCode="true"
+        ensureOverrideAttributes="false"
 >
-	<projectFiles>
-		<directory name="src"/>
-		<directory name="tests"/>
-		<ignoreFiles>
-			<directory name="vendor/phpunit"/>
-		</ignoreFiles>
-	</projectFiles>
-	<issueHandlers>
-		<RedundantPropertyInitializationCheck errorLevel="suppress"/>
-		<PropertyNotSetInConstructor errorLevel="suppress"/>
-		<MissingOverrideAttribute errorLevel="suppress"/>
-		<MissingConstructor errorLevel="suppress"/>
-		<ClassMustBeFinal errorLevel="suppress"/>
-		<InvalidDocblock errorLevel="suppress"/>
-	</issueHandlers>
-	<plugins>
-		<pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
-	</plugins>
+    <projectFiles>
+        <directory name="src"/>
+        <directory name="tests"/>
+        <ignoreFiles>
+            <directory name="vendor/phpunit"/>
+            <directory name="vendor/phpspec"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <RedundantPropertyInitializationCheck errorLevel="suppress"/>
+        <PropertyNotSetInConstructor errorLevel="suppress"/>
+        <MissingOverrideAttribute errorLevel="suppress"/>
+        <MissingConstructor errorLevel="suppress"/>
+        <ClassMustBeFinal errorLevel="suppress"/>
+        <InvalidDocblock errorLevel="suppress"/>
+        <MixedMethodCall errorLevel="suppress"/>
+        <UndefinedMagicMethod errorLevel="suppress"/>
+        <InternalMethod errorLevel="suppress"/>
+        <InternalClass errorLevel="suppress"/>
+    </issueHandlers>
+    <plugins>
+        <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+    </plugins>
 </psalm>
