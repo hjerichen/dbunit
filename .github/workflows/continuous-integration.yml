@@ -12,9 +12,9 @@ jobs:
     strategy:
       matrix:
         php:
-          - 8.2
           - 8.3
           - 8.4
+          - 8.5
         dependencies:
           - "--prefer-lowest"
           - ""
@@ -80,7 +80,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
           coverage: none
 
       - name: Get Composer Cache Directory
@@ -120,7 +120,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
           coverage: pcov
 
       - name: Get Composer Cache Directory
