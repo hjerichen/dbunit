@@ -14,7 +14,7 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
     private readonly ForeignKeyHandler $foreignKeyHandler;
 
     public function __construct(
-        private readonly PDO $database
+        protected readonly PDO $database
     ) {
         $this->foreignKeyHandler = new ForeignKeyHandlerMySQL($this->database);
     }
@@ -37,7 +37,7 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
      * @psalm-suppress LessSpecificReturnStatement
      * @psalm-suppress MoreSpecificReturnType
      */
-    private function getTablesContainingData(): array
+    protected function getTablesContainingData(): array
     {
         $databaseName = $this->getDatabaseName();
 
@@ -59,7 +59,7 @@ class DatabaseCleanerMySQL implements DatabaseCleaner
      * @psalm-suppress MixedInferredReturnType
      * @psalm-suppress MixedReturnStatement
      */
-    private function getDatabaseName(): string
+    protected function getDatabaseName(): string
     {
         return $this->database->query('select database()')->fetchColumn();
     }
